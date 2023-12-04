@@ -91,10 +91,26 @@ const getUsers = (req, res) => {
         res.sendStatus(422);
       });
   };
+  const deleteUser = (req, res) => {
+    const id = parseInt(req.params.id);
+    database
+      .query("delete from users where id = ?", [id])
+      .then(([result]) => {
+        if (result.affectedRows === 0) {
+          res.sendStatus(404);
+        } else {
+          res.sendStatus(204);
+        }
+      })
+      .catch((err) => {
+        res.sendStatus(500);
+      });
+  };
 
   module.exports = {
     getUsers,
     getUsersById,
     postUsers,
     updateUser,
+    deleteUser,
   };
